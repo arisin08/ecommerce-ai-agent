@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-dotenv
+aiosqlite
+sqlalchemy
+langgraph
+langgraph-checkpoint-sqlite
+langchain
+langchain-core
+langchain-openai
+langchain-chroma
+chromadb
+httpx
+pydantic
+typing-extensions
+langsmith        
+sentence-transformers

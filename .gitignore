@@ -1,0 +1,55 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# python packaging / build artifacts
+*.egg-info/
+dist/
+build/
+*.egg
+MANIFEST
+
+# testing & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# databases — contain real data, regenerated on startup
+*.db
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# vector store — regenerated on startup
+store_inventory/
+
+# langgraph local dev files
+.langgraph_api/
+
+# logs
+*.log
+logs/
+
+# virtual environments
+venv/
+.venv/
+env/
+agentic_ai_*/
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code
+.claude/
+
+# OS
+Thumbs.db
+.DS_Store
