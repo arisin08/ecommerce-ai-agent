@@ -13,8 +13,8 @@ API_URL = "http://127.0.0.1:8000/order"
 SIMULATION_ID = datetime.now().strftime("sim_%Y%m%d_%H%M%S")
 RESULTS_FILE = Path("simulation_results.csv")
 
-TOTAL_ORDERS = 10
-CONCURRENT_BATCH = 1
+TOTAL_ORDERS = 100
+CONCURRENT_BATCH = 2
 
 
 def generate_order_payload():
@@ -89,7 +89,15 @@ def generate_order_payload():
         }
 
     return initial_state
-
+    
+async def wait_for_server(client, retries=10, delay=2):
+    for _ in range(retries):
+        try:
+            await client.get("http://127.0.0.1:8000/docs")
+            return
+        except Exception:
+            await asyncio.sleep(delay)
+    raise RuntimeError("Server not ready")
 
 async def send_order(client, payload):
 
@@ -119,7 +127,13 @@ async def send_order(client, payload):
                 "latency": latency,
                 "error": f"{type(e).__name__}: {repr(e)}"
                }
-
+    
+async def send_order_with_retry(client, payload, retries=1):
+    for attempt in range(retries + 1):
+        result = await send_order(client, payload)
+        if result["final_status"] != "error" or attempt == retries:
+            return result
+        await asyncio.sleep(1)
 
 async def run_simulation():
 
@@ -128,7 +142,7 @@ async def run_simulation():
     start = time.time()
 
     async with httpx.AsyncClient(timeout=120) as client:
-
+        await wait_for_server(client)
         for batch_start in range(0, TOTAL_ORDERS, CONCURRENT_BATCH):
 
             tasks = []
@@ -137,7 +151,7 @@ async def run_simulation():
 
                 payload = generate_order_payload()
 
-                tasks.append(send_order(client, payload))
+                tasks.append(send_order_with_retry(client, payload))
 
             batch_results = await asyncio.gather(*tasks)
 

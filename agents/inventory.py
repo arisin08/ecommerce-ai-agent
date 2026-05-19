@@ -35,7 +35,7 @@ async def inventory_agent(state:InventoryState):
         quantity_available = 0
         unit_price = 0.0
         low_stock = False
-        alternatives = semantic_search(state["product_name"])
+        alternatives = await semantic_search(state["product_name"])
 
     else:
         is_available = inventory_product.quantity>=state['quantity']
@@ -44,7 +44,7 @@ async def inventory_agent(state:InventoryState):
         low_stock =   is_low_stock(inventory_product)
 
         if not is_available or low_stock:
-            alternatives = semantic_search(state["product_name"])
+            alternatives = await semantic_search(state["product_name"])
         
     #Building StockResponse (A2A contract b/w Order and Inventory Agent)
     stock_response = StockResponse(

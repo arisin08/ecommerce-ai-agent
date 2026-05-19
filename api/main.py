@@ -9,6 +9,7 @@ from core.database import init_db , seed_products
 from vectordb.store import build_vector_store
 from graph.main_graph import build_main_graph
 from typing import Literal
+from langgraph.checkpoint.memory import MemorySaver
 
 compiled_graph = None
 checkpointer_connection = None
@@ -25,7 +26,8 @@ async def lifespan(app:FastAPI):
     print(">>> Vector store done, opening checkpoint connection")
     checkpointer_connection = await aiosqlite.connect(CHECKPOINT_DB)
     #creating a saver by passing connection 
-    saver = AsyncSqliteSaver(checkpointer_connection)
+    # saver = AsyncSqliteSaver(checkpointer_connection)
+    saver = MemorySaver()
     print(">>> Saver created")
 
     #compiling the mainframe

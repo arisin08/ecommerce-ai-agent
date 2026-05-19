@@ -5,7 +5,7 @@ import json
 from core.schemas import InventoryQuery, OrderConfirm
 from core.state import OrderState
 
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 async def parse_order(query: str):
     system_prompt = """
