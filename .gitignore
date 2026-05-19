@@ -53,3 +53,6 @@ agentic_ai_*/
 # OS
 Thumbs.db
 .DS_Store
+
+
+langgraph.json
