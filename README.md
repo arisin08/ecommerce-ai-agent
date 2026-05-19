@@ -196,7 +196,7 @@ ecommerce-fulfillment/
 │   └── main.py                ← FastAPI app, lifespan, POST /order endpoint
 │
 └── scripts/
-    └── simulate.py            ← load test simulation
+    └── simulator.py            ← load test simulation
 ```
 
 ---
